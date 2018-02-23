@@ -1,6 +1,7 @@
 package br.com.devmedia.webservice.resources;
 
 import br.com.devmedia.webservice.domain.Imovel;
+import br.com.devmedia.webservice.resources.filtro.AcessoRestiro;
 import br.com.devmedia.webservice.service.ImovelService;
 
 import javax.ws.rs.*;
@@ -17,6 +18,7 @@ public class ImovelResource {
     private final ImovelService imovelService = new ImovelService();
 
     @POST
+    @AcessoRestiro
     public Response cadastrarImovel(Imovel imovel) {
         imovelService.cadastrarImovel(imovel);
         return Response.status(Status.CREATED)
@@ -37,12 +39,14 @@ public class ImovelResource {
 
     @PUT
     @Path("{imovelId}")
+    @AcessoRestiro
     public void update(@PathParam("imovelId") int id, Imovel imovel) {
         imovelService.atualizarImovel(id, imovel);
     }
 
     @DELETE
     @Path("{imovelId}")
+    @AcessoRestiro
     public void delete(@PathParam("imovelId") int id) {
         imovelService.descadastrarImovel(id);
     }

@@ -5,7 +5,8 @@ public class ErrorMessage {
     private String message;
     private int code;
 
-    public ErrorMessage() { }
+    public ErrorMessage() {
+    }
 
     public ErrorMessage(String message, int code) {
         super();

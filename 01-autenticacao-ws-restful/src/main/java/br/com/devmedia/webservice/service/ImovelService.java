@@ -25,6 +25,8 @@ public class ImovelService {
         return imovelDAO.selecionarImoveis();
     }
 
-    public Imovel obterImovel(long id) { return imovelDAO.recuperarImovelPorId(id); }
+    public Imovel obterImovel(long id) {
+        return imovelDAO.recuperarImovelPorId(id);
+    }
 
 }

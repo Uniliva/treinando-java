@@ -1,7 +1,5 @@
 package br.com.devmedia.webservice.domain;
 
-import net.bytebuddy.dynamic.loading.ClassReloadingStrategy;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -38,7 +36,6 @@ public class Usuario {
     public void setPassword(String password) {
         this.password = password;
     }
-
 
 
 }
