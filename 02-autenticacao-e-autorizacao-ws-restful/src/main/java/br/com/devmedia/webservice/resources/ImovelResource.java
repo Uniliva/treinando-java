@@ -12,6 +12,7 @@ import javax.ws.rs.core.Response.Status;
 import java.util.List;
 
 @AcessoRestrito
+@Path("/imoveis")
 @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
 @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 public class ImovelResource {

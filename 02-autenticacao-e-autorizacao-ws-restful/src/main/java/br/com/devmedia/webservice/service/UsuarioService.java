@@ -21,7 +21,7 @@ public class UsuarioService {
     }
 
     public Usuario saveUsuario(Usuario usuario) {
-        if (Tipo.CLIENTE.equals(usuario.getTipo())) {
+       if (Tipo.CLIENTE.equals(usuario.getTipo())) {
             return usuarioDAO.salvarUsuario(usuario);
         }
         return null;

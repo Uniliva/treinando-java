@@ -31,14 +31,14 @@ public class AutenticationAndAuthorizationFilter implements ContainerRequestFilt
 
     // é uma interface da API JAX-RS que nos permite recuperar a classe e o método do recurso solicitado na requisição. Logo vamos utilizá-lo
     @Context
-    private  ResourceInfo resourceInfo;
+    private ResourceInfo resourceInfo;
     /*@Context, estamos informando ao Jersey que ele deve injetar a instância de ResourceInfo nesse atributo. Em outras palavras, com esse código
     já temos como saber a classe do recurso e o método que deve ser executado para atender à requisição que chegou ao servidor.*/
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
         List<String> headersAutorizacao = requestContext.getHeaders().get(AUTHORIZATION_HEADER);
-        if((headersAutorizacao != null) && (headersAutorizacao.size() > 0)) {
+        if ((headersAutorizacao != null) && (headersAutorizacao.size() > 0)) {
             String dadosAutorizacao = headersAutorizacao.get(0);
             Usuario usuarioDoHeader = obterUsuarioDoHeader(dadosAutorizacao);
 
@@ -55,6 +55,7 @@ public class AutenticationAndAuthorizationFilter implements ContainerRequestFilt
                 .build();
 
         requestContext.abortWith(naoAutorizado);
+
     }
 
     private void autorizarUsuario(ContainerRequestContext requestContext, Usuario usuarioAutenticado) {
@@ -68,27 +69,54 @@ public class AutenticationAndAuthorizationFilter implements ContainerRequestFilt
         //lista os tipo de permissoes que o methodo tem
         List<Tipo> permissoesDoMetodo = recuperaPermissoes(metodoRecurso);
 
-        try{
-            if(permissoesDoRecurso.isEmpty()){
-                verificaPermissoes(permissoesDoRecurso,requestContext,usuarioAutenticado);
-            }else{
-                verificaPermissoes(permissoesDoMetodo,requestContext,usuarioAutenticado);
+        try {
+            if (permissoesDoRecurso.isEmpty()) {
+                verificaPermissoes(permissoesDoRecurso, requestContext, usuarioAutenticado);
+            } else {
+                verificaPermissoes(permissoesDoMetodo, requestContext, usuarioAutenticado);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             requestContext.abortWith(Response.status(Response.Status.FORBIDDEN)
                     .entity(new ErrorMessage("Usuário não tem permissão para executar essa função.",
                             Response.Status.FORBIDDEN.getStatusCode())).build());
 
         }
+    }
 
+    private void verificaPermissoes(List<Tipo> permissoes, ContainerRequestContext requestContext, Usuario usuario) throws Exception {
+        if (permissoes.contains(usuario.getTipo())) {
+
+            long idUsuarioAcesado = recuperaIDdaUrl(requestContext);
+
+            if (Tipo.CLIENTE.equals(usuario.getTipo()) && (usuario.getId() == idUsuarioAcesado)) {
+                return;
+            } else if (!Tipo.CLIENTE.equals(usuario)) {
+                return;
+
+            }
+
+        }
+        throw new Exception();
+    }
+
+    private long recuperaIDdaUrl(ContainerRequestContext requestContext) {
+        String idObtidoDaUrl = requestContext.getUriInfo().getPathParameters().getFirst("usuarioId");
+        if(idObtidoDaUrl == null){
+            return 0;
+        }else{
+            return Long.parseLong(idObtidoDaUrl);
+        }
 
     }
 
     private List<Tipo> recuperaPermissoes(AnnotatedElement elementoAnotado) {
+        //recupera a anotação
         AcessoRestrito acessoRestrito = elementoAnotado.getAnnotation(AcessoRestrito.class);
-        if(acessoRestrito == null){
+        if (acessoRestrito == null) {
+            //retona um lista vazia
             return new ArrayList<Tipo>();
-        }else{
+        } else {
+            //recupera todos os valores da anotação
             Tipo[] permissoes = acessoRestrito.value();
             return Arrays.asList(permissoes);
 
@@ -98,7 +126,7 @@ public class AutenticationAndAuthorizationFilter implements ContainerRequestFilt
     private Usuario obterUsuarioDoHeader(String dadosAutorizacao) {
         dadosAutorizacao = dadosAutorizacao.replaceFirst(BASIC_AUTHORIZATION_PREFIX, "");
         String dadosDecodificados = Base64.decodeAsString(dadosAutorizacao);
-        StringTokenizer dadosTokenizer = new StringTokenizer(dadosDecodificados,":");
+        StringTokenizer dadosTokenizer = new StringTokenizer(dadosDecodificados, ":");
         Usuario usuario = new Usuario();
         usuario.setUsername(dadosTokenizer.nextToken());
         usuario.setPassword(dadosTokenizer.nextToken());
