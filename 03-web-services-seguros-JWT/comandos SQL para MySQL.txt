@@ -1,0 +1,20 @@
+INSERT INTO usuarios(nome, username, password) VALUES('Fernanda', 'fernanda', '123456');
+INSERT INTO usuarios(nome, username, password) VALUES('Alex', 'alex', '123456');
+INSERT INTO usuarios(nome, username, password) VALUES('Ana', 'ana', '123456');
+
+
+INSERT INTO roles(nome) VALUES('ADMIN');
+INSERT INTO roles(nome) VALUES('SUPERVISOR');
+INSERT INTO roles(nome) VALUES('AUXILIAR');
+
+
+INSERT INTO roles_usuarios (roles_id, usuarios_id) VALUES (1, 1);
+INSERT INTO roles_usuarios (roles_id, usuarios_id) VALUES (2, 2);
+INSERT INTO roles_usuarios (roles_id, usuarios_id) VALUES (3, 3);
+INSERT INTO roles_usuarios (roles_id, usuarios_id) VALUES (3, 4);
+
+//Após a execução da classe Main e desses comandos no MySQL Workbench, teremos:
+// 1- eduardo (inserido no banco de dados com a execução da classe Main) será ADMIN
+// 2- fernanda será SUPERVISOR
+// 3- alex e ana serão AUXILIAR
+
