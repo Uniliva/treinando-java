@@ -45,6 +45,7 @@ public class ImovelResource {
 
     @DELETE
     @Path("{imovelId}")
+    @AcessoRestrito({Tipo.ADMINISTRADOR})
     public void excluirImovel(@PathParam("imovelId") long id) {
         imovelService.descadastrarImovel(id);
     }

@@ -1,6 +1,7 @@
 package br.com.devmedia.webservice.resources;
 
 import br.com.devmedia.webservice.domain.ErrorMessage;
+import br.com.devmedia.webservice.domain.Tipo;
 import br.com.devmedia.webservice.domain.Usuario;
 import br.com.devmedia.webservice.resources.filter.AcessoRestrito;
 import br.com.devmedia.webservice.service.UsuarioService;
@@ -32,7 +33,7 @@ public class UsuarioResource {
     }
 
     @GET
-    @AcessoRestrito
+    @AcessoRestrito({Tipo.FUNCIONARIO, Tipo.ADMINISTRADOR})
     public List<Usuario> recuperarUsuarios() {
         return usuarioService.getUsuarios();
     }
@@ -46,7 +47,7 @@ public class UsuarioResource {
 
     @PUT
     @Path("{usuarioId}")
-    @AcessoRestrito
+    @AcessoRestrito({Tipo.FUNCIONARIO, Tipo.ADMINISTRADOR})
     public Response atualizarUsuario(@PathParam("usuarioId") long id, Usuario usuario) {
         usuarioService.updateUsuario(usuario, id);
         return Response.noContent().build();
@@ -54,7 +55,7 @@ public class UsuarioResource {
 
     @DELETE
     @Path("{usuarioId}")
-    @AcessoRestrito
+    @AcessoRestrito({Tipo.ADMINISTRADOR})
     public Response removerUsuario(@PathParam("usuarioId") long id) {
         usuarioService.deleteUsuario(id);
         return Response.noContent().build();
