@@ -5,9 +5,10 @@ import br.com.devmedia.wsjwt.dao.ProdutoDAO;
 import br.com.devmedia.wsjwt.domain.Produto;
 import br.com.devmedia.wsjwt.utils.IdUtils;
 
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManager;
 import java.util.List;
-
 public class ProdutoService {
 
     private final ProdutoDAO produtoDAO = new ProdutoDAO();

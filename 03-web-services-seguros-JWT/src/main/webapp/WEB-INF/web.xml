@@ -17,4 +17,14 @@
 		<servlet-name>Servlet REST</servlet-name>
 		<url-pattern>/*</url-pattern>
 	</servlet-mapping>
+	<!-- Definindo uma restição de segurança para acesso apenas pelo protocolo https-->
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>URLs com HTTPS</web-resource-name>
+			<url-pattern>/*</url-pattern>
+		</web-resource-collection>
+		<user-data-constraint>
+			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
 </web-app>

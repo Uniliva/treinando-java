@@ -11,6 +11,7 @@ import java.util.List;
 
 @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
 @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+@PermitAll
 public class ProdutoResource {
 
     private final ProdutoService produtoService = new ProdutoService();
@@ -38,6 +39,7 @@ public class ProdutoResource {
 
     @PUT
     @Path("{produtoId}")
+    @RolesAllowed({"ADMIN","SUPERVISOR"})
     public Produto atualizarProduto(@PathParam("marcaId") long marcaId, @PathParam("produtoId") long produtoId, Produto produto) {
         produtoService.atualizarProduto(marcaId, produtoId, produto);
         return produto;
@@ -45,6 +47,7 @@ public class ProdutoResource {
 
     @DELETE
     @Path("{produtoId}")
+    @RolesAllowed({"ADMIN"})
     public void excluirProduto(@PathParam("produtoId") long produtoId) {
         produtoService.excluirProduto(produtoId);
     }

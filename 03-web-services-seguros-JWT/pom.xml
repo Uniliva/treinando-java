@@ -71,6 +71,9 @@
                 <configuration>
                     <port>8010</port>
                     <path>/segurancajwt</path>
+                    <httpsPort>8011</httpsPort><!-- padrão 8443-->
+                    <keystoreFile>${basedir}\src\main\resources\certificado\keystore.jks</keystoreFile>
+                    <keystorePass>unisenha</keystorePass>
                 </configuration>
             </plugin>
             <plugin>

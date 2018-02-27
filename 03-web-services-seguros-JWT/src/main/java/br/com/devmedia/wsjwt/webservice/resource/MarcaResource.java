@@ -15,6 +15,7 @@ import java.util.List;
 @Path("/marcas")
 @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
 @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+@PermitAll
 public class MarcaResource {
 
     private final MarcaService marcaService = new MarcaService();
@@ -42,6 +43,7 @@ public class MarcaResource {
 
     @PUT
     @Path("{marcaId}")
+    @RolesAllowed({"ADMIN","SUPERVISOR"})
     public Marca atualizarMarca(@PathParam("marcaId") long marcaId, Marca marca) {
         marcaService.atualizarMarca(marca, marcaId);
         return marca;
@@ -49,6 +51,7 @@ public class MarcaResource {
 
     @DELETE
     @Path("{marcaId}")
+    @RolesAllowed({"ADMIN"})
     public void excluirMarca(@PathParam("marcaId") long marcaId) {
         marcaService.excluirMarca(marcaId);
     }
