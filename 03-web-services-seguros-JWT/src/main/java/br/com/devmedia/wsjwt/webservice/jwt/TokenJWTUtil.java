@@ -1,6 +1,8 @@
 package br.com.devmedia.wsjwt.webservice.jwt;
 
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -28,12 +30,31 @@ public class TokenJWTUtil {
                 .setExpiration(toDate(LocalDateTime.now().plusMinutes(60L)))
                 .claim("roles", roles)
                 .compact();
-        System.out.println("Token gerado:: "+jwtToken);
         return jwtToken;
     }
 
     private static Date toDate(LocalDateTime localDateTime) {
         return Date.from
                 (localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+    }
+
+    public static boolean tokenValido(String token, Key key) {
+        try{
+            //realizando um parse do token levando em cosideração ao key
+            Jwts.parser().setSigningKey(key).parseClaimsJws(token);
+            return true;
+        }catch (Exception e ){
+            return false;
+        }
+    }
+
+    public static String recuperarNome(String token, Key key) {
+        Jws<Claims> claimsJwts = Jwts.parser().setSigningKey(key).parseClaimsJws(token);
+        return claimsJwts.getBody().getSubject();
+    }
+
+    public static List<String> recupearRoles(String token, Key key) {
+        Jws<Claims> claimsJwts = Jwts.parser().setSigningKey(key).parseClaimsJws(token);
+        return claimsJwts.getBody().get("roles",List.class);
     }
 }
