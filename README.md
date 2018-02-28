@@ -1,4 +1,4 @@
-# treinando-java
+# Treinando-java-Web-Service
 Repositório para estudos
 
 ## Projetos 
